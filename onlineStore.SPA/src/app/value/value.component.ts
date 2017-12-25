@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-value',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./value.component.css']
 })
 export class ValueComponent implements OnInit {
-
-  constructor() { }
+  values: any;
+  constructor(private http: Http) { }
 
   ngOnInit() {
+    this.getValues();
+  }
+
+  getValues() {
+    this.http.get('http://localhost:60233/api/values').subscribe(response => {
+      console.log(response);
+    });
   }
 
 }
