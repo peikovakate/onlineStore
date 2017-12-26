@@ -12,5 +12,7 @@ namespace onlineStore.Data
         public DataContext(DbContextOptions<DataContext> options): base(options) { }
 
         public DbSet<Value> Values { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
     }
 }
