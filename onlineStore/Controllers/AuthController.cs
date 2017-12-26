@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using onlineStore.Data;
+using onlineStore.Dtos;
 using onlineStore.Models;
 using System.Threading.Tasks;
 
@@ -17,21 +18,21 @@ namespace onlineStore.Controllers
 
         [HttpPost("register")]
 
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register(UserToRegisterDto adminForRegistration)
         {
             //validate requeste
 
-            username = username.ToLower();
+            adminForRegistration.Username = adminForRegistration.Username.ToLower();
 
-            if (await _repo.AdministratorExists(username))
+            if (await _repo.AdministratorExists(adminForRegistration.Username))
                 return BadRequest("Username is already taken");
 
             var adminToCreate = new Administrator
             {
-                Username = username
+                Username = adminForRegistration.Username
             };
 
-            var createAdmin = await _repo.Register(adminToCreate, password);
+            var createAdmin = await _repo.Register(adminToCreate, adminForRegistration.Password);
 
             return StatusCode(201);
         }
