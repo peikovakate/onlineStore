@@ -18,14 +18,21 @@ namespace onlineStore.Controllers
 
         [HttpPost("register")]
 
-        public async Task<IActionResult> Register(UserToRegisterDto adminForRegistration)
+        public async Task<IActionResult> Register([FromBody]UserToRegisterDto adminForRegistration)
         {
             //validate requeste
 
             adminForRegistration.Username = adminForRegistration.Username.ToLower();
 
             if (await _repo.AdministratorExists(adminForRegistration.Username))
-                return BadRequest("Username is already taken");
+                ModelState.AddModelError("Username", "Username already exists");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
 
             var adminToCreate = new Administrator
             {
