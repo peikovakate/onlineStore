@@ -7,5 +7,10 @@ namespace onlineStore.Models
 {
     public class Administrator
     {
+        public int Id { get; set; }
+
+        public string Username { get; set; }
+
+
     }
 }
