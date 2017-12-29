@@ -17,7 +17,6 @@ namespace onlineStore.Controllers
         }
 
         [HttpPost("register")]
-
         public async Task<IActionResult> Register([FromBody]UserToRegisterDto adminForRegistration)
         {
             //validate requeste
@@ -31,7 +30,6 @@ namespace onlineStore.Controllers
             {
                 return BadRequest(ModelState);
             }
-
 
 
             var adminToCreate = new Administrator
