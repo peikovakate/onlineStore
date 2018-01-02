@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using onlineStore.Data;
 using onlineStore.Dtos;
@@ -15,10 +16,12 @@ namespace onlineStore.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthRepository _repo;
+        private readonly IConfiguration _config;
 
-        public AuthController(IAuthRepository repo)
+        public AuthController(IAuthRepository repo, IConfiguration config)
         {
             _repo = repo;
+            _config = config;
         }
 
         [HttpPost("register")]
@@ -57,7 +60,7 @@ namespace onlineStore.Controllers
 
             // generating the token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("super secret key");
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -68,7 +71,7 @@ namespace onlineStore.Controllers
                 Expires = DateTime.Now.AddDays(1),
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha512)
+                    SecurityAlgorithms.HmacSha512Signature)
             }; 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
