@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace onlineStore.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
